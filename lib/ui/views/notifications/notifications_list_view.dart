@@ -7,9 +7,14 @@ import 'package:flutter_linkify/flutter_linkify.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class NotificationsListView extends StatelessWidget {
+  final GlobalKey<RefreshIndicatorState> _refreshKey =
+      new GlobalKey<RefreshIndicatorState>();
+
   @override
+  //called proper amount of times when pull-down to refresh
   Widget build(BuildContext context) {
-   return RefreshIndicator(
+    return RefreshIndicator(
+      key: _refreshKey,
       child: buildListView(context),
       onRefresh: () => Provider.of<MessagesDataProvider>(context, listen: false)
           .fetchMessages(true),
@@ -60,15 +65,19 @@ class NotificationsListView extends StatelessWidget {
     );
   }
 
+  //called every time but only want it once when loading initial notifs
   Widget _buildLoadingIndicator() {
-    return Padding(
-    padding: EdgeInsets.only(top: 10.0),
-    child: Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-        CircularProgressIndicator(),
-      ],
-    ));
+
+    if (_refreshKey.currentState.show() == true) {
+      return Padding(
+          padding: EdgeInsets.only(top: 10.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              CircularProgressIndicator(),
+            ],
+          ));
+    }
   }
 
   Widget _buildErrorText() {
