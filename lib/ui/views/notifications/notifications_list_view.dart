@@ -16,8 +16,11 @@ class NotificationsListView extends StatelessWidget {
     return RefreshIndicator(
       key: _refreshKey,
       child: buildListView(context),
-      onRefresh: () => Provider.of<MessagesDataProvider>(context, listen: false)
-          .fetchMessages(true),
+      onRefresh: () {
+        print('RefreshIndicator build method');
+        return Provider.of<MessagesDataProvider>(context, listen: false)
+            .fetchMessages(true);
+      },
     );
   }
 
@@ -67,8 +70,13 @@ class NotificationsListView extends StatelessWidget {
 
   //called every time but only want it once when loading initial notifs
   Widget _buildLoadingIndicator() {
+    print('in buildLoadingIndicator');
+    print(_refreshKey);
+    print(_refreshKey.currentState);
+    print(_refreshKey.currentState.show());
 
-    if (_refreshKey.currentState.show() == true) {
+    _refreshKey.currentState?.show()?.then((_) {
+      print('in RefreshKey current state show method');
       return Padding(
           padding: EdgeInsets.only(top: 10.0),
           child: Row(
@@ -77,7 +85,7 @@ class NotificationsListView extends StatelessWidget {
               CircularProgressIndicator(),
             ],
           ));
-    }
+    });
   }
 
   Widget _buildErrorText() {
