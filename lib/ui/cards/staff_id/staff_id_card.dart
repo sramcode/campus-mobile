@@ -30,8 +30,8 @@ class _StaffIdCardState extends State<StaffIdCard> {
     );
   }
 
-  final _url = "https://mobile.ucsd.edu/replatform/v1/qa/webview/staff_id.html";
-
+  var _url = "https://mobile.ucsd.edu/replatform/v1/qa/webview/staff_id.html";
+  //final _url = "file:///Users/sonikaram/Downloads/staff_id_sonika.html";
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -41,6 +41,10 @@ class _StaffIdCardState extends State<StaffIdCard> {
   set userDataProvider(UserDataProvider value) => _userDataProvider = value;
 
   Widget buildCardContent(BuildContext context) {
+    if (Theme.of(context).brightness == Brightness.dark) {
+      _url = "https://cwo-test.ucsd.edu/WebCards/staff_id_darkmode.html";
+    }
+
     _userDataProvider = Provider.of<UserDataProvider>(context);
 
     /// Verify that user is logged in

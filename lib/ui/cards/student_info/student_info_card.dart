@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+//import 'package:iwebview_flutter/platform_interface.dart';
 
 class StudentInfoCard extends StatefulWidget {
   StudentInfoCard();
@@ -31,7 +32,7 @@ class _StudentInfoCardState extends State<StudentInfoCard> {
     );
   }
 
-  final _url =
+  var _url =
       "https://mobile.ucsd.edu/replatform/v1/qa/webview/student_info.html";
 
   @override
@@ -43,6 +44,10 @@ class _StudentInfoCardState extends State<StudentInfoCard> {
   set userDataProvider(UserDataProvider value) => _userDataProvider = value;
 
   Widget buildCardContent(BuildContext context) {
+    if (Theme.of(context).brightness == Brightness.dark) {
+      _url = "https://cwo-test.ucsd.edu/WebCards/student_info_darkmode.html";
+    }
+
     _userDataProvider = Provider.of<UserDataProvider>(context);
 
     /// Verify that user is logged in
@@ -60,6 +65,7 @@ class _StudentInfoCardState extends State<StudentInfoCard> {
       children: <Widget>[
         Flexible(
             child: WebView(
+          //backgroundColor: Colors.black,
           javascriptMode: JavascriptMode.unrestricted,
           initialUrl: url,
           onWebViewCreated: (controller) {

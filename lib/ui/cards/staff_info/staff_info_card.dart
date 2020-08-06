@@ -36,13 +36,15 @@ class _StaffInfoCardState extends State<StaffInfoCard> {
     super.didChangeDependencies();
   }
 
-  final _url =
-      "https://mobile.ucsd.edu/replatform/v1/qa/webview/staff_info.html";
+  var _url = "https://mobile.ucsd.edu/replatform/v1/qa/webview/staff_info.html";
 
   UserDataProvider _userDataProvider;
   set userDataProvider(UserDataProvider value) => _userDataProvider = value;
 
   Widget buildCardContent(BuildContext context) {
+    if (Theme.of(context).brightness == Brightness.dark) {
+      _url = "https://cwo-test.ucsd.edu/WebCards/staff_info_darkmode.html";
+    }
     _userDataProvider = Provider.of<UserDataProvider>(context);
 
     if (_userDataProvider.isLoggedIn) {

@@ -35,10 +35,14 @@ class _CampusInfoCardState extends State<CampusInfoCard> {
     super.didChangeDependencies();
   }
 
-  final _url =
+  var _url =
       "https://mobile.ucsd.edu/replatform/v1/qa/webview/campus_info.html";
 
   Widget buildCardContent(BuildContext context) {
+    if (Theme.of(context).brightness == Brightness.dark) {
+      _url = "https://cwo-test.ucsd.edu/WebCards/campus_info_darkmode.html";
+    }
+
     return Column(
       children: <Widget>[
         Flexible(
