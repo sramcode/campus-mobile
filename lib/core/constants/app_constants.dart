@@ -12,8 +12,10 @@ class RoutePaths {
   static const String Profile = 'profile';
   static const String CardsView = 'profile/cards_view';
   static const String BeaconView = 'profile/beacon_view';
-  static const String AutomaticBluetoothLoggerView = 'profile/automatic_bluetooth_logger_view';
-  static const String BluetoothPermissionsView = 'profile/bluetooth_permissions_view';
+  static const String AutomaticBluetoothLoggerView =
+      'profile/automatic_bluetooth_logger_view';
+  static const String BluetoothPermissionsView =
+      'profile/bluetooth_permissions_view';
   static const String NotificationsSettingsView =
       'notifications/notifications_settings';
 
@@ -24,6 +26,8 @@ class RoutePaths {
   static const String EventDetailView = 'events/event_detail_view';
   static const String LinksViewAll = 'links/links_list';
   static const String ClassScheduleViewAll = 'class/classList';
+  static const String MidtermsViewAll = 'class/midtermList';
+
   static const String ManageAvailabilityView =
       'availability/manage_locations_view';
   static const String ManageParkingView = 'parking/manage_parking_view';

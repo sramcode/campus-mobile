@@ -49,6 +49,7 @@ class ClassScheduleDataProvider extends ChangeNotifier {
   ClassScheduleModel _classScheduleModel;
   Map<String, List<SectionData>> _enrolledClasses;
   Map<String, List<SectionData>> _finals;
+  Map<String, List<SectionData>> _midterms;
   AcademicTermModel _academicTermModel;
   UserDataProvider _userDataProvider;
 
@@ -71,17 +72,16 @@ class ClassScheduleDataProvider extends ChangeNotifier {
         /// erase old model
         _classScheduleModel = ClassScheduleModel();
 
-        /// fetch grad courses
-        if (await _classScheduleService.fetchGRCourses(
-            headers, _academicTermModel.termCode)) {
-          _classScheduleModel = _classScheduleService.GRdata;
-        } else {
-          _error = _classScheduleService.error.toString();
-        }
+//        /// fetch grad courses
+//        if (await _classScheduleService.fetchGRCourses(
+//            headers, _academicTermModel.termCode)) {
+//          _classScheduleModel = _classScheduleService.GRdata;
+//        } else {
+//          _error = _classScheduleService.error.toString();
+//        }
 
         /// fetch undergrad courses
-        if (await _classScheduleService.fetchUNCourses(
-            headers, _academicTermModel.termCode)) {
+        if (await _classScheduleService.fetchUNCourses()) {
           if (_classScheduleModel.data != null) {
             _classScheduleModel.data.addAll(_classScheduleService.UNdata.data);
           } else {
@@ -119,6 +119,18 @@ class ClassScheduleDataProvider extends ChangeNotifier {
           'SU': List<SectionData>(),
           'OTHER': List<SectionData>(),
         };
+
+        _midterms = {
+          'MO': List<SectionData>(),
+          'TU': List<SectionData>(),
+          'WE': List<SectionData>(),
+          'TH': List<SectionData>(),
+          'FR': List<SectionData>(),
+          'SA': List<SectionData>(),
+          'SU': List<SectionData>(),
+          'OTHER': List<SectionData>(),
+        };
+
         try {
           _createMapOfClasses();
         } catch (e) {
@@ -171,6 +183,8 @@ class ClassScheduleDataProvider extends ChangeNotifier {
           _enrolledClasses[day].add(sectionData);
         } else if (sectionData.specialMtgCode == 'FI') {
           _finals[day].add(sectionData);
+        } else if (sectionData.specialMtgCode == 'MI') {
+          _midterms[day].add(sectionData);
         }
       }
     }
@@ -182,6 +196,10 @@ class ClassScheduleDataProvider extends ChangeNotifier {
 
     for (List<SectionData> listOfFinals in _finals.values.toList()) {
       listOfFinals.sort((a, b) => _compare(a, b));
+    }
+
+    for (List<SectionData> listOfMidterms in _midterms.values.toList()) {
+      listOfMidterms.sort((a, b) => _compare(a, b));
     }
   }
 
@@ -266,6 +284,8 @@ class ClassScheduleDataProvider extends ChangeNotifier {
 
   ///SIMPLE GETTERS
   Map<String, List<SectionData>> get finals => _finals;
+  Map<String, List<SectionData>> get midterms => _midterms;
+
   Map<String, List<SectionData>> get enrolledClasses => _enrolledClasses;
   bool get isLoading => _isLoading;
   String get error => _error;

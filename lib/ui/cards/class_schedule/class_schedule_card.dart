@@ -23,6 +23,15 @@ class ClassScheduleCard extends StatelessWidget {
         Navigator.pushNamed(context, RoutePaths.ClassScheduleViewAll);
       },
     ));
+
+    actionButtons.add(FlatButton(
+      child: Text(
+        'View Midterms',
+      ),
+      onPressed: () {
+        Navigator.pushNamed(context, RoutePaths.MidtermsViewAll);
+      },
+    ));
     return actionButtons;
   }
 
@@ -33,11 +42,12 @@ class ClassScheduleCard extends StatelessWidget {
       hide: () => Provider.of<CardsDataProvider>(context, listen: false)
           .toggleCard(cardId),
       reload: () {
-        if (Provider.of<ClassScheduleDataProvider>(context, listen: false).isLoading){
+        if (Provider.of<ClassScheduleDataProvider>(context, listen: false)
+            .isLoading) {
           return null;
-        }
-        else{
-          Provider.of<ClassScheduleDataProvider>(context, listen: false).fetchData();
+        } else {
+          Provider.of<ClassScheduleDataProvider>(context, listen: false)
+              .fetchData();
         }
       },
       isLoading: Provider.of<ClassScheduleDataProvider>(context).isLoading,
@@ -74,7 +84,8 @@ class ClassScheduleCard extends StatelessWidget {
                   buildLocationRow(courseData[selectedCourse].building +
                       ' ' +
                       courseData[selectedCourse].room),
-                  buildGradeEvaluationRow(courseData[selectedCourse].gradeOption),
+                  buildGradeEvaluationRow(
+                      courseData[selectedCourse].gradeOption),
                   Flexible(
                     flex: 2,
                     child: Padding(
@@ -88,8 +99,8 @@ class ClassScheduleCard extends StatelessWidget {
             ),
           ),
           Flexible(
-              flex: 2,
-              child: UpcomingCoursesList(),
+            flex: 2,
+            child: UpcomingCoursesList(),
           ),
         ],
       ),

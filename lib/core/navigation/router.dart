@@ -12,6 +12,7 @@ import 'package:campus_mobile_experimental/ui/views/bluetooth/automatic_bluetoot
 import 'package:campus_mobile_experimental/ui/views/bluetooth/beacon_view.dart';
 import 'package:campus_mobile_experimental/ui/views/bluetooth/advanced_wayfinding_permission.dart';
 import 'package:campus_mobile_experimental/ui/views/class_schedule/class_list.dart';
+import 'package:campus_mobile_experimental/ui/views/class_schedule/midterm_list.dart';
 import 'package:campus_mobile_experimental/ui/views/dining/dining_detail_view.dart';
 import 'package:campus_mobile_experimental/ui/views/dining/nutrition_facts_view.dart';
 import 'package:campus_mobile_experimental/ui/views/events/event_detail_view.dart';
@@ -153,6 +154,8 @@ class Router {
         });
       case RoutePaths.ClassScheduleViewAll:
         return MaterialPageRoute(builder: (_) => ClassList());
+      case RoutePaths.MidtermsViewAll:
+        return MaterialPageRoute(builder: (_) => MidtermList());
       case RoutePaths.SpotTypesView:
         return MaterialPageRoute(builder: (_) {
           Provider.of<CustomAppBar>(_).changeTitle(settings.name);

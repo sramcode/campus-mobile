@@ -41,7 +41,7 @@ class ClassData {
   String termCode;
   String subjectCode;
   String courseCode;
-  double units;
+  int units;
   String courseLevel;
   String gradeOption;
   String grade;
@@ -114,6 +114,7 @@ class SectionData {
   String courseTitle;
   String gradeOption;
   String enrollStatus;
+  String date;
 
   SectionData({
     this.section,
@@ -125,11 +126,13 @@ class SectionData {
     this.instructorName,
     this.specialMtgCode,
     this.enrollStatus,
+    this.date,
   });
 
   factory SectionData.fromJson(Map<String, dynamic> json) => SectionData(
         section: json["section"] == null ? null : json["section"],
         meetingType: json["meeting_type"] == null ? null : json["meeting_type"],
+        date: json["date"] == null ? null : json["date"],
         time: json["time"] == null ? null : json["time"],
         days: json["days"] == null ? null : json["days"],
         building: json["building"] == null ? null : json["building"],
@@ -145,6 +148,7 @@ class SectionData {
   Map<String, dynamic> toJson() => {
         "section": section == null ? null : section,
         "meeting_type": meetingType == null ? null : meetingType,
+        "date": date == null ? null : date,
         "time": time == null ? null : time,
         "days": days == null ? null : days,
         "building": building == null ? null : building,
