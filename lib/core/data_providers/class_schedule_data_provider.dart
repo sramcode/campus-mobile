@@ -49,7 +49,7 @@ class ClassScheduleDataProvider extends ChangeNotifier {
   ClassScheduleModel _classScheduleModel;
   Map<String, List<SectionData>> _enrolledClasses;
   Map<String, List<SectionData>> _finals;
-  Map<String, List<SectionData>> _midterms;
+  List<SectionData> _midterms;
   AcademicTermModel _academicTermModel;
   UserDataProvider _userDataProvider;
 
@@ -120,17 +120,6 @@ class ClassScheduleDataProvider extends ChangeNotifier {
           'OTHER': List<SectionData>(),
         };
 
-        _midterms = {
-          'MO': List<SectionData>(),
-          'TU': List<SectionData>(),
-          'WE': List<SectionData>(),
-          'TH': List<SectionData>(),
-          'FR': List<SectionData>(),
-          'SA': List<SectionData>(),
-          'SU': List<SectionData>(),
-          'OTHER': List<SectionData>(),
-        };
-
         try {
           _createMapOfClasses();
         } catch (e) {
@@ -183,9 +172,10 @@ class ClassScheduleDataProvider extends ChangeNotifier {
           _enrolledClasses[day].add(sectionData);
         } else if (sectionData.specialMtgCode == 'FI') {
           _finals[day].add(sectionData);
-        } else if (sectionData.specialMtgCode == 'MI') {
-          _midterms[day].add(sectionData);
         }
+//        } else if (sectionData.specialMtgCode == 'MI') {
+//          _midterms.add(sectionData);
+//        }
       }
     }
 
@@ -196,10 +186,6 @@ class ClassScheduleDataProvider extends ChangeNotifier {
 
     for (List<SectionData> listOfFinals in _finals.values.toList()) {
       listOfFinals.sort((a, b) => _compare(a, b));
-    }
-
-    for (List<SectionData> listOfMidterms in _midterms.values.toList()) {
-      listOfMidterms.sort((a, b) => _compare(a, b));
     }
   }
 
@@ -284,7 +270,7 @@ class ClassScheduleDataProvider extends ChangeNotifier {
 
   ///SIMPLE GETTERS
   Map<String, List<SectionData>> get finals => _finals;
-  Map<String, List<SectionData>> get midterms => _midterms;
+  List<SectionData> get midterms => _midterms;
 
   Map<String, List<SectionData>> get enrolledClasses => _enrolledClasses;
   bool get isLoading => _isLoading;
