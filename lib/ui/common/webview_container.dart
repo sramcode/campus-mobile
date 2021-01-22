@@ -39,7 +39,9 @@ class WebViewContainer extends StatefulWidget {
   _WebViewContainerState createState() => _WebViewContainerState();
 }
 
-class _WebViewContainerState extends State<WebViewContainer> {
+class _WebViewContainerState extends State<WebViewContainer>
+    with AutomaticKeepAliveClientMixin {
+  bool get wantKeepAlive => true;
   UserDataProvider _userDataProvider;
   WebViewController _webViewController;
   double _contentHeight = cardContentMinHeight;
@@ -62,7 +64,7 @@ class _WebViewContainerState extends State<WebViewContainer> {
     if (widget.requireAuth) {
       _userDataProvider = Provider.of<UserDataProvider>(context);
       webCardUrl = widget.initialUrl +
-          "?token=${_userDataProvider.authenticationModel.accessToken}&expiration=${_userDataProvider.authenticationModel.expiration}";
+          "?expiration=${_userDataProvider.authenticationModel.expiration}#${_userDataProvider.authenticationModel.accessToken}";
     } else {
       webCardUrl = widget.initialUrl;
     }
@@ -110,23 +112,23 @@ class _WebViewContainerState extends State<WebViewContainer> {
 
   // builds the actual webview widget
   Widget buildBody(context) {
-      return Container(
-        height: _contentHeight,
-        child: WebView(
-          opaque: false,
-          javascriptMode: JavascriptMode.unrestricted,
-          initialUrl: webCardUrl,
-          onWebViewCreated: (controller) {
-            _webViewController = controller;
-          },
-          javascriptChannels: <JavascriptChannel>[
-            _linksChannel(context),
-            _heightChannel(context),
-            _mapChannel(context),
-            _refreshTokenChannel(context)
-          ].toSet(),
-        ),
-      );
+    return Container(
+      height: _contentHeight,
+      child: WebView(
+        opaque: false,
+        javascriptMode: JavascriptMode.unrestricted,
+        initialUrl: webCardUrl,
+        onWebViewCreated: (controller) {
+          _webViewController = controller;
+        },
+        javascriptChannels: <JavascriptChannel>[
+          _linksChannel(context),
+          _heightChannel(context),
+          _mapChannel(context),
+          _refreshTokenChannel(context)
+        ].toSet(),
+      ),
+    );
   }
 
   Widget buildMenu() {
@@ -217,8 +219,7 @@ class _WebViewContainerState extends State<WebViewContainer> {
         Provider.of<MapsDataProvider>(context, listen: false)
             .searchBarController
             .text = message.message;
-        Provider.of<MapsDataProvider>(context, listen: false)
-            .fetchLocations();
+        Provider.of<MapsDataProvider>(context, listen: false).fetchLocations();
         Provider.of<BottomNavigationBarProvider>(context, listen: false)
             .currentIndex = NavigatorConstants.MapTab;
       },
@@ -230,7 +231,7 @@ class _WebViewContainerState extends State<WebViewContainer> {
       name: 'RefreshToken',
       onMessageReceived: (JavascriptMessage message) async {
         if (Provider.of<UserDataProvider>(context, listen: false).isLoggedIn) {
-          await _userDataProvider.refreshToken();
+          await _userDataProvider.silentLogin();
           _webViewController?.reload();
         }
       },
